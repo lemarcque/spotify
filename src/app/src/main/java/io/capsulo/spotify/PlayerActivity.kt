@@ -45,10 +45,16 @@ class PlayerActivity : Activity() {
     }
 
     private fun loadData() {
-        val ins = assets.open("artwork_damso_ipseite.jpg")
+        // Set album artwork
+        val ins = assets.open("artwork_drake_scorpion.jpg")
         val drawable = RoundedBitmapDrawableFactory.create(resources, ins)
         drawable.cornerRadius = 50f
         artwork_album_player.setImageDrawable(drawable)
         ins.close()
+
+        // Set song's information
+        txt_player_title.text = "Emotionless"
+        txt_player_author.text = "Drake"
+
     }
 }

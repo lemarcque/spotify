@@ -4,5 +4,6 @@
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#ffff64</color>
     <color name="colorGreenSpotify">#1DB954</color>
+    <color name="colorGenius">#ffff64</color>
     <color name="colorSeekbar">#f2f2f2</color>
 </resources>

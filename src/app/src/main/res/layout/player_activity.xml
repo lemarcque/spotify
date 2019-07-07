@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark">
 
     <!-- Toolbar -->
     <Toolbar
@@ -28,11 +29,11 @@
 
     </Toolbar>
 
-    <!-- Container -->
+    <!-- Container : Main-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/white"
+        android:background="@drawable/layout_player_bkg"
         android:orientation="vertical"
         android:paddingHorizontal="40dp">
 
@@ -40,7 +41,7 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp">
+            android:layout_marginBottom="30dp">
 
             <!-- Artwork container -->
             <ImageView
@@ -48,7 +49,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:contentDescription="Artwork" />
+                android:contentDescription="Artwork"/>
 
         </FrameLayout>
 
@@ -68,19 +69,21 @@
 
                 <!-- Title's Song -->
                 <TextView
+                    android:id="@+id/txt_player_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     android:textColor="@color/colorPrimaryDark"
-                    android:text="Z. Kietu" />
+                    android:text="Emotionless" />
 
                 <!-- Author -->
                 <TextView
+                    android:id="@+id/txt_player_author"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="15sp"
-                    android:text="Damso" />
+                    tools:text="Drake" />
 
             </LinearLayout>
 
@@ -90,17 +93,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
+                android:drawableLeft="@drawable/ic_heart"
+                android:drawablePadding="5dp"
                 android:background="@drawable/button_like_bkg"
                 android:minWidth="0dp"
                 android:minHeight="0dp"
-                android:paddingHorizontal="25dp"
+                android:paddingHorizontal="15dp"
                 android:paddingVertical="11dp"
                 android:textColor="@android:color/white"
                 android:textSize="12sp"
                 android:text="Saved" />
         </RelativeLayout>
 
-        <!-- Controller : Layout -->
+        <!-- Controller : Position -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -142,5 +147,151 @@
                     android:text="3:51"/>
             </RelativeLayout>
         </LinearLayout>
+
+        <!-- Controller : Media -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="20dp">
+
+
+            <!-- Controller : Button -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <!-- Button : Refresh -->
+                <ImageButton
+                    android:id="@+id/btn_player_refresh"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:scaleType="fitXY"
+                    android:layout_marginRight="30dp"
+                    android:src="@drawable/ic_refresh_black_24dp"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="Refresh button" />
+
+                <!-- Button : Rewind -->
+                <ImageButton
+                    android:id="@+id/btn_player_rewind"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_fast_rewind_black_24dp"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="Rewind button" />
+            </LinearLayout>
+
+            <!-- Button : Pause -->
+            <ImageButton
+                android:id="@+id/btn_player_pause"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
+                android:src="@drawable/pause_button_circle"
+                android:background="@android:color/transparent"
+                android:scaleType="fitXY"
+                android:contentDescription="Pause button" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right">
+
+                <!-- Button : Fast forward -->
+                <ImageButton
+                    android:id="@+id/btn_player_fast_forward"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:src="@drawable/ic_fast_forward_black_24dp"
+                    android:scaleType="fitXY"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="Fast forward button" />
+
+                <!-- Button : Shuffle -->
+                <ImageButton
+                    android:id="@+id/btn_player_shuffle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="30dp"
+                    android:src="@drawable/ic_shuffle_black"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="Shuffle button" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Button :  Bluethooth / Airpods -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="5dp">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:drawableStart="@drawable/ic_bluethooth"
+                android:drawablePadding="-10dp"
+                android:background="@android:color/transparent"
+                android:textSize="11sp"
+                android:textColor="@color/colorGreenSpotify"
+                android:text="airpods"/>
+        </RelativeLayout>
+
     </LinearLayout>
+
+    <!-- Container : Bottom -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="15dp"
+        android:paddingHorizontal="40dp">
+
+        <!-- Button : Lyrics -->
+        <ImageButton
+            android:id="@+id/btn_player_lyrics"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_micro_24"
+            android:background="@drawable/rounded_btn_yellow" />
+
+        <!-- Container : Genius Logo -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
+                android:text="Lyrics by"/>
+
+            <!-- Logo : Genius -->
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="16dp"
+                android:paddingHorizontal="0dp"
+                android:src="@drawable/test"/>
+        </LinearLayout>
+
+        <!-- Button : Playlist play -->
+        <ImageButton
+            android:id="@+id/btn_player_playlist_play"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_playlist_play"
+            android:background="@drawable/rounded_btn"/>
+
+    </LinearLayout>
+
 </LinearLayout>
