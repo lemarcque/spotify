@@ -131,6 +131,7 @@
 
                 <!-- Time : Current -->
                 <TextView
+                    android:id="@+id/txt_player_current_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
@@ -140,6 +141,7 @@
 
                 <!-- Time : Duration -->
                 <TextView
+                    android:id="@+id/txt_player_duration_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -189,7 +191,7 @@
                 android:id="@+id/btn_player_pause"
                 android:layout_width="65dp"
                 android:layout_height="65dp"
-                android:src="@drawable/pause_button_circle"
+                android:src="@drawable/ic_pause_button_circle"
                 android:background="@android:color/transparent"
                 android:scaleType="fitXY"
                 android:contentDescription="Pause button" />
