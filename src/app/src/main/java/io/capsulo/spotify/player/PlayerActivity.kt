@@ -3,17 +3,19 @@ package io.capsulo.spotify.player
 import android.app.Activity
 import android.media.MediaPlayer
 import android.os.Bundle
-import kotlinx.android.synthetic.main.player_activity.*
 import android.view.Menu
 import android.view.MenuItem
+import android.view.MotionEvent
+import android.view.View
+import android.view.animation.Animation
+import android.view.animation.TranslateAnimation
+import android.widget.LinearLayout
 import android.widget.SeekBar
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
-import io.capsulo.spotify.R
-import kotlinx.android.synthetic.main.player_activity.view.*
+import kotlinx.android.synthetic.main.player_activity.*
 import java.util.*
 import kotlin.math.floor
 import kotlin.math.round
-import kotlin.math.roundToInt
 
 
 /**
@@ -25,9 +27,14 @@ class PlayerActivity : Activity() {
     private var timer: Timer? = null
     private var isFinish: Boolean = false
 
+    //
+    private var expandedHeightContainer:Int? = null
+    private var shortedHeightContainer:Int? = null
+    private var isExpanded = true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        super.setContentView(R.layout.player_activity)
+        super.setContentView(io.capsulo.spotify.R.layout.player_activity)
         setInterface()
 
         // init
@@ -68,32 +75,118 @@ class PlayerActivity : Activity() {
 
         // handle click on rewind button
         btn_player_rewind.setOnClickListener { restart() }
+
+        // configuration of main container
+        expandedHeightContainer = main_container_player.height
+
+        shortedHeightContainer = 150
+
+        // handle click on "lyrics" button
+        btn_player_lyrics.setOnClickListener { if (isExpanded) {
+                slideUp(main_container_player)
+                isExpanded = false
+            }
+        }
+    }
+
+    /**
+     * TODO : Create a Custom View (Slider) and deport function
+     */
+    private fun slideDown(view: View) {
+        view.visibility = View.VISIBLE
+        val animate = TranslateAnimation(
+            0f, // fromXDelta
+            0f, // toXDelta
+            - view.height.toFloat() + shortedHeightContainer!!, // fromYDelta
+            0f
+        )                // toYDelta
+        animate.duration = 500
+        animate.fillAfter = true
+        animate.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationRepeat(p0: Animation?) {
+            }
+
+            override fun onAnimationStart(p0: Animation?) {
+            }
+
+            override fun onAnimationEnd(p0: Animation?) {
+                isExpanded = false
+
+                // Switch view displayed
+                //controller_expanded_player.vis
+                controller_expanded_player.visibility = View.VISIBLE
+                controller_shorted_player.visibility = View.GONE
+            }
+        })
+        view.startAnimation(animate)
+    }
+
+    // slide the view from its current position to below itself
+    private fun slideUp(view: View) {
+        val animate = TranslateAnimation(
+            0f, // fromXDelta
+            0f, // toXDelta
+            0f, // fromYDelta
+            - view.height.toFloat() + shortedHeightContainer!!
+        ) // toYDelta
+        animate.duration = 500
+        animate.fillAfter = true
+
+
+        animate.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationRepeat(p0: Animation?) {
+            }
+
+            override fun onAnimationStart(p0: Animation?) {
+            }
+
+            override fun onAnimationEnd(p0: Animation?) {
+                isExpanded = false
+
+                // Switch view displayed
+                controller_expanded_player.visibility = View.INVISIBLE
+                controller_shorted_player.visibility = View.VISIBLE
+                controller_shorted_player.setOnClickListener {
+                    if (!isExpanded) {
+                    slideDown(main_container_player)
+                }}
+            }
+        })
+
+        view.startAnimation(animate)
     }
 
     override
     fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.player_menu, menu)
+        menuInflater.inflate(io.capsulo.spotify.R.menu.player_menu, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean = when(item?.itemId) {
         android.R.id.home -> { println("Quit app"); true }
-        R.id.action_like_player -> { println("Add a like"); true }
+        io.capsulo.spotify.R.id.action_like_player -> { println("Add a like"); true }
         else -> super.onOptionsItemSelected(item)
     }
 
     private fun loadData() {
-        // Set album artwork
+        // Import album cover
         val ins = assets.open("artwork_drake_scorpion.jpg")
         val drawable = RoundedBitmapDrawableFactory.create(resources, ins)
         drawable.cornerRadius = 50f
+
+        // set drawable to views
         artwork_album_player.setImageDrawable(drawable)
+        thumb_artwork_album_player.setImageDrawable(drawable)
+
+        // close stream
         ins.close()
 
         // Set song's information
         txt_player_title.text = "I'm upset"
         txt_player_author.text = "Drake"
+        txt_player_title.text = txt_player_title.text
+        txt_player_author_shorted.text = txt_player_author.text
     }
 
     /**
@@ -102,7 +195,7 @@ class PlayerActivity : Activity() {
      */
     private fun tempPlayer() {
 
-        player = MediaPlayer.create(this, R.raw.drake_imupset)
+        player = MediaPlayer.create(this, io.capsulo.spotify.R.raw.drake_imupset)
         player?.setOnCompletionListener { stop() }
 
         // set song's information
@@ -119,18 +212,18 @@ class PlayerActivity : Activity() {
     }
 
     private fun play() {
-        btn_player_pause.setImageDrawable(getDrawable(R.drawable.ic_pause_button_circle))
+        btn_player_pause.setImageDrawable(getDrawable(io.capsulo.spotify.R.drawable.ic_pause_button_circle))
         player?.start()
     }
 
     private fun pause() {
-        btn_player_pause.setImageDrawable(getDrawable(R.drawable.ic_play_button_circle))
+        btn_player_pause.setImageDrawable(getDrawable(io.capsulo.spotify.R.drawable.ic_play_button_circle))
         player?.pause()
     }
 
     private fun stop() {
         isFinish = true
-        btn_player_pause.setImageDrawable(getDrawable(R.drawable.ic_play_button_circle))
+        btn_player_pause.setImageDrawable(getDrawable(io.capsulo.spotify.R.drawable.ic_play_button_circle))
         //player?.reset()
         timer?.cancel()
         timer?.purge()
@@ -139,7 +232,7 @@ class PlayerActivity : Activity() {
 
     private fun restart() {
         isFinish = false
-        btn_player_pause.setImageDrawable(getDrawable(R.drawable.ic_pause_button_circle))
+        btn_player_pause.setImageDrawable(getDrawable(io.capsulo.spotify.R.drawable.ic_pause_button_circle))
         seekbar_player.progress = 0
         player?.seekTo(0)
         player?.start()
