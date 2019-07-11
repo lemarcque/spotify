@@ -81,12 +81,9 @@ class PlayerActivity : Activity() {
 
         shortedHeightContainer = 150
 
-        // handle click on "lyrics" button
-        btn_player_lyrics.setOnClickListener { if (isExpanded) {
-                slideUp(main_container_player)
-                isExpanded = false
-            }
-        }
+        // set click event for sliding up / down
+        btn_player_lyrics.setOnClickListener { if (isExpanded) slideUp(main_container_player)}
+        main_container_player.setOnClickListener { if (!isExpanded) slideDown(main_container_player) }
     }
 
     /**
@@ -110,7 +107,7 @@ class PlayerActivity : Activity() {
             }
 
             override fun onAnimationEnd(p0: Animation?) {
-                isExpanded = false
+                isExpanded = true
 
                 // Switch view displayed
                 //controller_expanded_player.vis
@@ -146,14 +143,14 @@ class PlayerActivity : Activity() {
                 // Switch view displayed
                 controller_expanded_player.visibility = View.INVISIBLE
                 controller_shorted_player.visibility = View.VISIBLE
-                controller_shorted_player.setOnClickListener {
-                    if (!isExpanded) {
-                    slideDown(main_container_player)
-                }}
             }
         })
 
         view.startAnimation(animate)
+    }
+
+    private fun test() {
+        println("Emotion !")
     }
 
     override

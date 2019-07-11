@@ -35,8 +35,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="20dp"
+        android:paddingHorizontal="40dp"
         android:background="@drawable/layout_player_bkg"
-        android:paddingHorizontal="40dp">
+        android:clickable="true">
 
         <!-- Content Expanded -->
         <LinearLayout
