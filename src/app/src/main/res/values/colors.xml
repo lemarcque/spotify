@@ -6,4 +6,6 @@
     <color name="colorGreenSpotify">#1DB954</color>
     <color name="colorGenius">#ffff64</color>
     <color name="colorSeekbar">#f2f2f2</color>
+    <color name="colorLyricsBloc">#818182</color>
+    <color name="colorLyricsNext">#4a4a4c</color>
 </resources>

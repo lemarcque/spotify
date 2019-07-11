@@ -34,7 +34,7 @@
         android:id="@+id/main_container_player"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="20dp"
+
         android:paddingHorizontal="40dp"
         android:background="@drawable/layout_player_bkg"
         android:clickable="true">
@@ -44,6 +44,7 @@
             android:id="@+id/controller_expanded_player"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingBottom="20dp"
             android:orientation="vertical">
 
             <!-- Artwork : Layout -->
@@ -265,78 +266,94 @@
             android:id="@+id/controller_shorted_player"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
             android:layout_gravity="bottom"
-            android:visibility="gone">
+            android:visibility="gone"
+            android:orientation="vertical">
 
-            <!-- Thumbnail Artwork : Layout -->
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp">
-
-                <!-- Artwork container -->
-                <ImageView
-                    android:id="@+id/thumb_artwork_album_player"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_gravity="center"
-                    android:contentDescription="Thumbnail Artwork"
-                    android:background="@android:color/black"/>
-
-            </FrameLayout>
-
-            <!-- Information : Layout -->
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content">
 
-                <!-- Information -->
-                <LinearLayout
+                <!-- Thumbnail Artwork : Layout -->
+                <FrameLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_alignParentLeft="true">
+                    android:layout_marginRight="10dp">
 
-                    <!-- Title's Song -->
-                    <TextView
-                        android:id="@+id/txt_player_title_shorted"
+                    <!-- Artwork container -->
+                    <ImageView
+                        android:id="@+id/thumb_artwork_album_player"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:contentDescription="Thumbnail Artwork"
+                        android:background="@android:color/black"/>
+
+                </FrameLayout>
+
+                <!-- Information : Layout -->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <!-- Information -->
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:text="Emotionless" />
+                        android:orientation="vertical"
+                        android:layout_alignParentLeft="true">
 
-                    <!-- Author -->
-                    <TextView
-                        android:id="@+id/txt_player_author_shorted"
+                        <!-- Title's Song -->
+                        <TextView
+                            android:id="@+id/txt_player_title_shorted"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:text="Emotionless" />
+
+                        <!-- Author -->
+                        <TextView
+                            android:id="@+id/txt_player_author_shorted"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="14sp"
+                            tools:text="Drake" />
+
+                    </LinearLayout>
+
+                    <!-- More -->
+                    <ImageButton
+                        android:id="@+id/btn_player_more_shorted"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="14sp"
-                        tools:text="Drake" />
+                        android:layout_toLeftOf="@id/btn_player_saved_shorted"
+                        android:layout_marginRight="30dp"
+                        android:src="@drawable/ic_more_horiz_gray_24dp"
+                        android:background="@android:color/transparent"/>
 
-                </LinearLayout>
+                    <!-- Saved -->
+                    <ImageButton
+                        android:id="@+id/btn_player_saved_shorted"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:src="@drawable/ic_heart_green_24"
+                        android:background="@android:color/transparent"/>
+                </RelativeLayout>
 
-                <!-- More -->
-                <ImageButton
-                    android:id="@+id/btn_player_more_shorted"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@id/btn_player_saved_shorted"
-                    android:layout_marginRight="30dp"
-                    android:src="@drawable/ic_more_horiz_gray_24dp"
-                    android:background="@android:color/transparent"/>
+            </LinearLayout>
 
-                <!-- Saved -->
-                <ImageButton
-                    android:id="@+id/btn_player_saved_shorted"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:src="@drawable/ic_heart_green_24"
-                    android:background="@android:color/transparent"/>
-            </RelativeLayout>
+            <!-- Indicator for Sliding-->
+            <View
+                android:layout_width = "40dp"
+                android:layout_height="5dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/round_borders_slider_indicator_bkg" />
 
         </LinearLayout>
 
