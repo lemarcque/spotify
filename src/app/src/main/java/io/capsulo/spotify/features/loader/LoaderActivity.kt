@@ -1,9 +1,9 @@
-package io.capsulo.spotify.loader
+package io.capsulo.spotify.features.loader
 
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import io.capsulo.spotify.player.PlayerActivity
+import io.capsulo.spotify.features.player.PlayerActivity
 import io.capsulo.spotify.R
 
 /**

@@ -8,12 +8,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
-        <activity android:name=".loader.LoaderActivity">
+        <activity android:name="io.capsulo.spotify.features.loader.LoaderActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".player.PlayerActivity" />
+        <activity android:name="io.capsulo.spotify.features.player.PlayerActivity" />
     </application>
 </manifest>

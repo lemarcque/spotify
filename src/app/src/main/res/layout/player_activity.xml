@@ -1,294 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark">
+    tools:context=".features.player.PlayerActivity">
 
-    <!-- Toolbar -->
-    <Toolbar
-        android:id="@+id/toolbar_player"
+
+    <LinearLayout
+        android:id="@+id/layout_player_genius_lyrics"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:elevation="0dp"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+        android:layout_height="match_parent"
+        android:paddingTop="150dp"
+        android:paddingStart="40dp"
+        android:paddingEnd="45dp"
+        android:background="@android:color/black">
 
-        <!-- Custom title -->
-        <TextView
-            android:id="@+id/title_toolbar_player"
+        <!-- Arrow : Current line indicator -->
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textStyle="bold"
-            android:textColor="@color/colorPrimaryDark"
-            android:text="Songs" />
+            android:layout_marginEnd="13dp"
+            android:src="@drawable/ic_play_arrow_black_24dp"
+            android:contentDescription="Current line indicator" />
 
-    </Toolbar>
+        <!-- Container : Genius Lyrics -->
+        <ScrollView
+            android:id="@+id/scrollview_player_genius_lyrics"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:visibility="visible">
 
-    <!-- Container : Main-->
-    <FrameLayout
-        android:id="@+id/main_container_player"
+            <!-- TextView : Lyrics -->
+            <TextView
+                android:id="@+id/textview_player_lyrics_raw"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:lineHeight="30sp"
+                tools:text="@string/lyrics_test" />
+
+            <!-- Recycler view -->
+            <!--<androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerview_player"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                tools:listitem="@layout/item_lyrics_list">
+
+            </androidx.recyclerview.widget.RecyclerView>-->
+
+        </ScrollView>
+    </LinearLayout>
+
+
+    <!-- Layout : Player Controls -->
+    <LinearLayout
+        android:id="@+id/layout_player_controls"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@android:color/black"
+        android:visibility="gone">
 
-        android:paddingHorizontal="40dp"
-        android:background="@drawable/layout_player_bkg"
-        android:clickable="true">
-
-        <!-- Content Expanded -->
-        <LinearLayout
-            android:id="@+id/controller_expanded_player"
+        <!-- Toolbar -->
+        <Toolbar
+            android:id="@+id/toolbar_player"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="20dp"
-            android:orientation="vertical">
+            android:background="?attr/colorPrimary"
+            android:elevation="0dp"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-            <!-- Artwork : Layout -->
-            <FrameLayout
-                android:layout_width="match_parent"
+            <!-- Custom title -->
+            <TextView
+                android:id="@+id/title_toolbar_player"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="30dp">
+                android:layout_gravity="center"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimaryDark"
+                android:text="Songs" />
 
-                <!-- Artwork container -->
-                <ImageView
-                    android:id="@+id/artwork_album_player"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:contentDescription="Artwork"/>
+        </Toolbar>
 
-            </FrameLayout>
+        <!-- Container : Main-->
+        <FrameLayout
+            android:id="@+id/main_container_player"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
 
-            <!-- Information : Layout -->
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="30dp">
+            android:paddingHorizontal="40dp"
+            android:background="@drawable/layout_player_bkg"
+            android:clickable="true">
 
-                <!-- Information -->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_alignParentLeft="true">
-
-                    <!-- Title's Song -->
-                    <TextView
-                        android:id="@+id/txt_player_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:text="Emotionless" />
-
-                    <!-- Author -->
-                    <TextView
-                        android:id="@+id/txt_player_author"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="15sp"
-                        tools:text="Drake" />
-
-                </LinearLayout>
-
-                <!-- Saved -->
-                <Button
-                    android:id="@+id/like_button_player"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:drawableLeft="@drawable/ic_heart"
-                    android:drawablePadding="5dp"
-                    android:background="@drawable/button_like_bkg"
-                    android:minWidth="0dp"
-                    android:minHeight="0dp"
-                    android:paddingHorizontal="15dp"
-                    android:paddingVertical="11dp"
-                    android:textColor="@android:color/white"
-                    android:textSize="12sp"
-                    android:text="Saved" />
-            </RelativeLayout>
-
-            <!-- Controller : Position -->
+            <!-- Content Expanded -->
             <LinearLayout
+                android:id="@+id/controller_expanded_player"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingBottom="20dp"
                 android:orientation="vertical">
 
-                <!-- Seek bar -->
-                <SeekBar
-                    android:id="@+id/seekbar_player"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="0dp"
-                    android:paddingEnd="0dp"
-                    android:thumbOffset="4dp"
-                    android:thumbTint="@color/colorPrimaryDark"
-                    android:progressDrawable="@drawable/progres_drawable"
-                    android:minHeight="2dp"
-                    android:maxHeight="2dp" />
-
-                <!-- Time Text : Containe -->
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <!-- Time : Current -->
-                    <TextView
-                        android:id="@+id/txt_player_current_time"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textSize="12sp"
-                        android:text="0:00"/>
-
-                    <!-- Time : Duration -->
-                    <TextView
-                        android:id="@+id/txt_player_duration_time"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:textSize="12sp"
-                        android:text="3:51"/>
-                </RelativeLayout>
-            </LinearLayout>
-
-            <!-- Controller : Media -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_marginTop="20dp">
-
-
-                <!-- Controller : Button -->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
-
-                    <!-- Button : Refresh -->
-                    <ImageButton
-                        android:id="@+id/btn_player_refresh"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:scaleType="fitXY"
-                        android:layout_marginRight="30dp"
-                        android:src="@drawable/ic_refresh_black_24dp"
-                        android:background="@android:color/transparent"
-                        android:contentDescription="Refresh button" />
-
-                    <!-- Button : Rewind -->
-                    <ImageButton
-                        android:id="@+id/btn_player_rewind"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/ic_fast_rewind_black_24dp"
-                        android:background="@android:color/transparent"
-                        android:contentDescription="Rewind button" />
-                </LinearLayout>
-
-                <!-- Button : Pause -->
-                <ImageButton
-                    android:id="@+id/btn_player_pause"
-                    android:layout_width="65dp"
-                    android:layout_height="65dp"
-                    android:src="@drawable/ic_pause_button_circle"
-                    android:background="@android:color/transparent"
-                    android:scaleType="fitXY"
-                    android:contentDescription="Pause button" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="right">
-
-                    <!-- Button : Fast forward -->
-                    <ImageButton
-                        android:id="@+id/btn_player_fast_forward"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        android:src="@drawable/ic_fast_forward_black_24dp"
-                        android:scaleType="fitXY"
-                        android:background="@android:color/transparent"
-                        android:contentDescription="Fast forward button" />
-
-                    <!-- Button : Shuffle -->
-                    <ImageButton
-                        android:id="@+id/btn_player_shuffle"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        android:layout_marginLeft="30dp"
-                        android:src="@drawable/ic_shuffle_black"
-                        android:background="@android:color/transparent"
-                        android:contentDescription="Shuffle button" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <!-- Button :  Bluethooth / Airpods -->
-            <RelativeLayout
-                android:id="@+id/layout_player_airpods"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:gravity="center"
-                android:clickable="true"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:visibility="visible">
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:drawableStart="@drawable/ic_bluethooth"
-                    android:drawablePadding="-10dp"
-                    android:background="@android:color/transparent"
-                    android:textSize="11sp"
-                    android:textColor="@color/colorGreenSpotify"
-                    android:text="airpods"/>
-            </RelativeLayout>
-        </LinearLayout>
-
-        <!-- Content Shorted -->
-        <LinearLayout
-            android:id="@+id/controller_shorted_player"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="10dp"
-            android:layout_gravity="bottom"
-            android:visibility="gone"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <!-- Thumbnail Artwork : Layout -->
+                <!-- Artwork : Layout -->
                 <FrameLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp">
+                    android:layout_marginBottom="30dp">
 
                     <!-- Artwork container -->
                     <ImageView
-                        android:id="@+id/thumb_artwork_album_player"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
+                        android:id="@+id/artwork_album_player"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:contentDescription="Thumbnail Artwork"
-                        android:background="@android:color/black"/>
+                        android:contentDescription="Artwork"/>
 
                 </FrameLayout>
 
@@ -296,7 +127,8 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="30dp">
 
                     <!-- Information -->
                     <LinearLayout
@@ -307,105 +139,382 @@
 
                         <!-- Title's Song -->
                         <TextView
-                            android:id="@+id/txt_player_title_shorted"
+                            android:id="@+id/txt_player_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="16sp"
+                            android:textSize="20sp"
                             android:textStyle="bold"
                             android:textColor="@color/colorPrimaryDark"
                             android:text="Emotionless" />
 
                         <!-- Author -->
                         <TextView
-                            android:id="@+id/txt_player_author_shorted"
+                            android:id="@+id/txt_player_author"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="14sp"
+                            android:textSize="15sp"
                             tools:text="Drake" />
 
                     </LinearLayout>
 
-                    <!-- More -->
-                    <ImageButton
-                        android:id="@+id/btn_player_more_shorted"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_toLeftOf="@id/btn_player_saved_shorted"
-                        android:layout_marginRight="30dp"
-                        android:src="@drawable/ic_more_horiz_gray_24dp"
-                        android:background="@android:color/transparent"/>
-
                     <!-- Saved -->
-                    <ImageButton
-                        android:id="@+id/btn_player_saved_shorted"
+                    <Button
+                        android:id="@+id/like_button_player"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
-                        android:src="@drawable/ic_heart_green_24"
-                        android:background="@android:color/transparent"/>
+                        android:drawableLeft="@drawable/ic_heart"
+                        android:drawablePadding="5dp"
+                        android:background="@drawable/button_like_bkg"
+                        android:minWidth="0dp"
+                        android:minHeight="0dp"
+                        android:paddingHorizontal="15dp"
+                        android:paddingVertical="11dp"
+                        android:textColor="@android:color/white"
+                        android:textSize="12sp"
+                        android:text="Saved" />
                 </RelativeLayout>
+
+                <!-- Controller : Position -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <!-- Seek bar -->
+                    <SeekBar
+                        android:id="@+id/seekbar_player"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="0dp"
+                        android:paddingEnd="0dp"
+                        android:thumbOffset="4dp"
+                        android:thumbTint="@color/colorPrimaryDark"
+                        android:progressDrawable="@drawable/progres_drawable"
+                        android:minHeight="2dp"
+                        android:maxHeight="2dp" />
+
+                    <!-- Time Text : Containe -->
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <!-- Time : Current -->
+                        <TextView
+                            android:id="@+id/txt_player_current_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="12sp"
+                            android:text="0:00"/>
+
+                        <!-- Time : Duration -->
+                        <TextView
+                            android:id="@+id/txt_player_duration_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:textSize="12sp"
+                            android:text="3:51"/>
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <!-- Controller : Media -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_marginTop="20dp">
+
+
+                    <!-- Controller : Button -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <!-- Button : Refresh -->
+                        <ImageButton
+                            android:id="@+id/btn_player_refresh"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:scaleType="fitXY"
+                            android:layout_marginRight="30dp"
+                            android:src="@drawable/ic_refresh_black_24dp"
+                            android:background="@android:color/transparent"
+                            android:contentDescription="Refresh button" />
+
+                        <!-- Button : Rewind -->
+                        <ImageButton
+                            android:id="@+id/btn_player_rewind"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/ic_fast_rewind_black_24dp"
+                            android:background="@android:color/transparent"
+                            android:contentDescription="Rewind button" />
+                    </LinearLayout>
+
+                    <!-- Button : Pause -->
+                    <ImageButton
+                        android:id="@+id/btn_player_pause"
+                        android:layout_width="65dp"
+                        android:layout_height="65dp"
+                        android:src="@drawable/ic_pause_button_circle"
+                        android:background="@android:color/transparent"
+                        android:scaleType="fitXY"
+                        android:contentDescription="Pause button" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="right">
+
+                        <!-- Button : Fast forward -->
+                        <ImageButton
+                            android:id="@+id/btn_player_fast_forward"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:src="@drawable/ic_fast_forward_black_24dp"
+                            android:scaleType="fitXY"
+                            android:background="@android:color/transparent"
+                            android:contentDescription="Fast forward button" />
+
+                        <!-- Button : Shuffle -->
+                        <ImageButton
+                            android:id="@+id/btn_player_shuffle"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:layout_marginLeft="30dp"
+                            android:src="@drawable/ic_shuffle_black"
+                            android:background="@android:color/transparent"
+                            android:contentDescription="Shuffle button" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!-- Button :  Bluethooth / Airpods -->
+                <RelativeLayout
+                    android:id="@+id/layout_player_airpods"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:visibility="visible">
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:drawableStart="@drawable/ic_bluethooth"
+                        android:drawablePadding="-10dp"
+                        android:background="@android:color/transparent"
+                        android:textSize="11sp"
+                        android:textColor="@color/colorGreenSpotify"
+                        android:text="airpods"/>
+                </RelativeLayout>
+            </LinearLayout>
+
+            <!-- Content Shorted -->
+            <LinearLayout
+                android:id="@+id/controller_shorted_player"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:layout_gravity="bottom"
+                android:visibility="gone"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <!-- Thumbnail Artwork : Layout -->
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp">
+
+                        <!-- Artwork container -->
+                        <ImageView
+                            android:id="@+id/thumb_artwork_album_player"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center"
+                            android:contentDescription="Thumbnail Artwork"
+                            android:background="@android:color/black"/>
+
+                    </FrameLayout>
+
+                    <!-- Information : Layout -->
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <!-- Information -->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_alignParentLeft="true">
+
+                            <!-- Title's Song -->
+                            <TextView
+                                android:id="@+id/txt_player_title_shorted"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:text="Emotionless" />
+
+                            <!-- Author -->
+                            <TextView
+                                android:id="@+id/txt_player_author_shorted"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="14sp"
+                                tools:text="Drake" />
+
+                        </LinearLayout>
+
+                        <!-- More -->
+                        <ImageButton
+                            android:id="@+id/btn_player_more_shorted"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toLeftOf="@id/btn_player_saved_shorted"
+                            android:layout_marginRight="30dp"
+                            android:src="@drawable/ic_more_horiz_gray_24dp"
+                            android:background="@android:color/transparent"/>
+
+                        <!-- Saved -->
+                        <ImageButton
+                            android:id="@+id/btn_player_saved_shorted"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:src="@drawable/ic_heart_green_24"
+                            android:background="@android:color/transparent"/>
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <!-- Indicator for Sliding-->
+                <View
+                    android:layout_width = "40dp"
+                    android:layout_height="5dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/round_borders_slider_indicator_bkg" />
 
             </LinearLayout>
 
-            <!-- Indicator for Sliding-->
-            <View
-                android:layout_width = "40dp"
-                android:layout_height="5dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/round_borders_slider_indicator_bkg" />
+        </FrameLayout>
 
-        </LinearLayout>
-
-    </FrameLayout>
-
-    <!-- Container : Bottom -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="15dp"
-        android:paddingHorizontal="40dp">
-
-        <!-- Button : Lyrics -->
-        <ImageButton
-            android:id="@+id/btn_player_lyrics"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/ic_micro_24"
-            android:background="@drawable/rounded_btn_yellow" />
-
-        <!-- Container : Genius Logo -->
+        <!-- Container : Bottom -->
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:id="@+id/layout_player_bottom"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:layout_weight="1">
+            android:paddingHorizontal="40dp"
+            android:visibility="visible">
 
-            <TextView
+            <!-- Button : Lyrics -->
+            <ImageButton
+                android:id="@+id/btn_player_lyrics"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_micro_24"
+                android:background="@drawable/rounded_btn_yellow" />
+
+            <!-- Container : Genius Logo -->
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="3dp"
-                android:textColor="@android:color/white"
-                android:textSize="14sp"
-                android:text="Lyrics by"/>
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_weight="1">
 
-            <!-- Logo : Genius -->
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="16dp"
-                android:paddingHorizontal="0dp"
-                android:src="@drawable/logo_genius"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="3dp"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp"
+                    android:text="Lyrics by"/>
+
+                <!-- Logo : Genius -->
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="16dp"
+                    android:paddingHorizontal="0dp"
+                    android:src="@drawable/logo_genius"/>
+            </LinearLayout>
+
+            <!-- Button : Playlist play -->
+            <ImageButton
+                android:id="@+id/btn_player_playlist_play"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_playlist_play"
+                android:background="@drawable/rounded_btn"/>
+
         </LinearLayout>
 
-        <!-- Button : Playlist play -->
-        <ImageButton
-            android:id="@+id/btn_player_playlist_play"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/ic_playlist_play"
-            android:background="@drawable/rounded_btn"/>
+        <!-- Container : Genius Bottom -->
+        <LinearLayout
+            android:id="@+id/controller_player_genius"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="40dp"
+            android:gravity="center"
+            android:visibility="invisible">
+
+            <!-- Button : Pause -->
+            <ImageButton
+                android:id="@+id/btn_player_lyrics_genius"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_pause_button_white_circle"
+                android:scaleType="fitXY"
+                android:background="@drawable/rounded_btn"/>
+
+            <!-- Container : Genius Logo -->
+            <!-- Seek bar -->
+            <SeekBar
+                android:id="@+id/seekbar_player_genius"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingStart="0dp"
+                android:paddingEnd="0dp"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="15dp"
+                android:thumbOffset="4dp"
+                android:thumbTint="@color/colorPrimaryDark"
+                android:progressDrawable="@drawable/progres_drawable"
+                android:minHeight="2dp"
+                android:maxHeight="2dp" />
+
+            <!-- Button : Playlist play -->
+            <ImageButton
+                android:id="@+id/btn_player_playlist_genius"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_playlist_play"
+                android:background="@drawable/rounded_btn"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 
-</LinearLayout>
+
+</RelativeLayout>

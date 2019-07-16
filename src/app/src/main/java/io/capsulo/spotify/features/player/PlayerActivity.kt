@@ -1,31 +1,37 @@
-package io.capsulo.spotify.player
+package io.capsulo.spotify.features.player
 
 import android.app.Activity
+import android.graphics.Color
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.MotionEvent
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.TranslateAnimation
-import android.widget.LinearLayout
 import android.widget.SeekBar
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
 import kotlinx.android.synthetic.main.player_activity.*
 import java.util.*
 import kotlin.math.floor
 import kotlin.math.round
+import kotlin.math.roundToInt
 
 
 /**
  * Responsible for displaying music controller.
  */
-class PlayerActivity : Activity() {
+class PlayerActivity : Activity(), LyricsReader.LyricsReaderLister {
 
+    private lateinit var adapter: LyricsViewerAdapter
+    //
+    private var reader: LyricsReader? = null
     private var player: MediaPlayer? = null
     private var timer: Timer? = null
     private var isFinish: Boolean = false
+
+    private var pointerLyrics = 0
+    private lateinit var referentTimeList: List<Referent>
 
     //
     private var expandedHeightContainer:Int? = null
@@ -42,6 +48,10 @@ class PlayerActivity : Activity() {
         tempPlayer()
     }
 
+    /**
+     * Settings of View.
+     * // TODO : This method is too much long !!
+     */
     private fun setInterface() {
         // configuration of app bar
         setActionBar(toolbar_player)
@@ -84,6 +94,11 @@ class PlayerActivity : Activity() {
         // set click event for sliding up / down
         btn_player_lyrics.setOnClickListener { if (isExpanded) slideUp(main_container_player)}
         main_container_player.setOnClickListener { if (!isExpanded) slideDown(main_container_player) }
+
+        /*// Set RecyclerView
+        adapter = LyricsViewerAdapter()
+        recyclerview_player.adapter = adapter
+        recyclerview_player.layoutManager = LinearLayoutManager(this)*/
     }
 
     /**
@@ -113,6 +128,10 @@ class PlayerActivity : Activity() {
                 //controller_expanded_player.vis
                 controller_expanded_player.visibility = View.VISIBLE
                 controller_shorted_player.visibility = View.GONE
+                layout_player_bottom.visibility = View.VISIBLE
+                layout_player_controls.setBackgroundColor(Color.BLACK)
+                layout_player_genius_lyrics.visibility = View.GONE
+                controller_player_genius.visibility = View.INVISIBLE
             }
         })
         view.startAnimation(animate)
@@ -143,14 +162,14 @@ class PlayerActivity : Activity() {
                 // Switch view displayed
                 controller_expanded_player.visibility = View.INVISIBLE
                 controller_shorted_player.visibility = View.VISIBLE
+                layout_player_bottom.visibility = View.GONE
+                layout_player_controls.setBackgroundColor(Color.TRANSPARENT)
+                layout_player_genius_lyrics.visibility = View.VISIBLE
+                controller_player_genius.visibility = View.VISIBLE
             }
         })
 
         view.startAnimation(animate)
-    }
-
-    private fun test() {
-        println("Emotion !")
     }
 
     override
@@ -168,7 +187,7 @@ class PlayerActivity : Activity() {
 
     private fun loadData() {
         // Import album cover
-        val ins = assets.open("artwork_drake_scorpion.jpg")
+        val ins = assets.open("artwork/artwork_drake_scorpion.jpg")
         val drawable = RoundedBitmapDrawableFactory.create(resources, ins)
         drawable.cornerRadius = 50f
 
@@ -184,6 +203,47 @@ class PlayerActivity : Activity() {
         txt_player_author.text = "Drake"
         txt_player_title.text = txt_player_title.text
         txt_player_author_shorted.text = txt_player_author.text
+
+        // Load Lyrics
+        reader = LyricsReader(this)
+        reader?.load(assets, "lyrics/test.json")
+    }
+
+    override fun onLoaded(list: List<Referent>) {
+        /*adapter.update(listOf(
+            Referent("[Intro]", 0.0),
+            Referent("Yeah", 3.0),
+            Referent("[Chorus]", 6.0),
+            Referent("I'm upset", 7.0),
+            Referent("Fifty thousand on my head, it's disrespect", 8.0),
+            Referent("So offended that I had to double check", 10.0),
+            Referent("I'ma always take the money over sex", 12.0),
+            Referent("That's why they need me out the way, what you expect?", 13.0),
+            Referent("[Verse 1]", 13.0),
+            Referent("Got a lot of blood and it's cold", 13.0),
+            Referent("They keep tryna get me for my soul", 13.0),
+            Referent("Thankful for the women that I know", 13.0),
+            Referent("Can't go fifty-fifty with no hoe\n", 13.0)
+        ))*/
+        referentTimeList = list
+
+        for(i in 0 until referentTimeList.size) {
+            val s = textview_player_lyrics_raw.text.toString() + referentTimeList[i].text + "\n"
+            textview_player_lyrics_raw.text = s
+
+
+            // Set time with specific format
+            if(referentTimeList[i].time != null) {
+                val t = String
+                    .format("%.2f", referentTimeList[i].time)
+                    .replace(',', '.')
+                    .toDouble()
+                referentTimeList[i].timeShorted = t
+            }
+        }
+
+        println("FIRST " + getNextTimedReferent(0))
+        pointerLyrics = getNextTimedReferent(0)
     }
 
     /**
@@ -195,8 +255,6 @@ class PlayerActivity : Activity() {
         player = MediaPlayer.create(this, io.capsulo.spotify.R.raw.drake_imupset)
         player?.setOnCompletionListener { stop() }
 
-        // set song's information
-
         // set duration formatted
         val minFloat = player?.duration!!.toDouble() / 1000 / 60 // 3.60065
         val float = minFloat - floor(minFloat) // .60065
@@ -206,6 +264,7 @@ class PlayerActivity : Activity() {
 
         player?.start()
         startTimer()
+        startTimerLyrics()
     }
 
     private fun play() {
@@ -231,6 +290,7 @@ class PlayerActivity : Activity() {
         isFinish = false
         btn_player_pause.setImageDrawable(getDrawable(io.capsulo.spotify.R.drawable.ic_pause_button_circle))
         seekbar_player.progress = 0
+        pointerLyrics = 0
         player?.seekTo(0)
         player?.start()
         startTimer()
@@ -258,5 +318,46 @@ class PlayerActivity : Activity() {
                 }
             }
         }, 0, 1000)
+    }
+
+    private fun startTimerLyrics() {
+        val timerLyrics = Timer()
+        timerLyrics?.scheduleAtFixedRate(object : TimerTask() {
+            override fun run() {
+                if(player != null && player!!.isPlaying) {
+                    runOnUiThread {
+                        val currentSec:Double = (player!!.currentPosition.toDouble() / 10)
+                                .roundToInt().toDouble()
+                        val currentTime = currentSec / 100
+                        if(currentTime == referentTimeList[pointerLyrics].timeShorted) {
+
+                            val index = textview_player_lyrics_raw.text.indexOf(referentTimeList[pointerLyrics].text)
+                            val lineNumber = textview_player_lyrics_raw.layout.getLineForOffset(index)
+                            val posY = textview_player_lyrics_raw.layout.getLineTop(lineNumber)
+
+                            println(posY) // TODOD : DOES NOT WORK
+
+                            scrollview_player_genius_lyrics.smoothScrollBy(0, posY)
+                            pointerLyrics = getNextTimedReferent(pointerLyrics)
+                        }
+                    }
+                }
+            }
+        }, 0, 10)
+    }
+
+    private fun getNextTimedReferent(index: Int): Int {
+        var i = index + 1
+        while(true) {
+            if(i < referentTimeList.size) {
+                if (referentTimeList[i].timeShorted != null) {
+                    return i
+                } else {
+                    i++
+                }
+            }else {
+                return -1
+            }
+        }
     }
 }
